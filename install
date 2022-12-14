@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+
+DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+rm -rf $HOME/.config/nvim
+ln -s $DOTFILES/nvim $HOME/.config/nvim
+
+rm -rf $HOME/.config/kitty
+ln -s $DOTFILES/kitty $HOME/.config/kitty
+
+rm -rf $HOME/.config/raycast
+ln -s $DOTFILES/raycast $HOME/.config/raycast
+
+# install language servers
+npm i -g bash-language-server
+npm i -g intelephense
+brew install lua-language-server
+brew install pyright
+
+# install phpactor
+if [ ! -d "$HOME/phpactor" ]; then
+    rm -rf $HOME/phpactor/
+    cd $HOME
+    git clone git@github.com:phpactor/phpactor
+    cd $HOME/phpactor
+    composer install
+    cd /usr/local/bin
+    ln -s $HOME/phpactor/bin/phpactor phpactor
+fi
